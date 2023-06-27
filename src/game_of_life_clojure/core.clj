@@ -24,29 +24,30 @@
 
 (defn get-live-neighbours-count [world cell])
 
-(defn get-neighbours [world x y]
-  (concat (map (fn [i] (let [y (+ i x)]
-                         {:x x :y y})) (range -1 2))
-          (map (fn [i] (let [y (+ i x)]
-                         {:x (- x 1) :y y})) (range -1 2))
-          (map (fn [i] (let [y (+ i x)]
-                         {:x (+ x 1) :y y})) (range -1 2))))
+(defn get-neighbours [x y]
+  (concat (map (fn [i] {:y (+ y i) :x (- x 1)}) (range -1 2))
+          (map (fn [i] {:x x :y (+ y i)}) (range -1 2))
+          (map (fn [i] {:x (+ x 1) :y (+ y i)}) (range -1 2))))
+
+(count (get-neighbours 4 5))
 
 (defn is-alive [world x y]
   (some (fn [item] (= item {:x x :y y})) world))
 
-(count (get-neighbours world 4 5))
-
 (is-alive world 5 5)
 
-(println world)
-
 (defn render [world]
+  (print "   ")
+  (dotimes [n 10] (print n " "))
+  (println)
   (dotimes [x 10]
-    (println)
+    (print x "")
     (dotimes [y 10]
       (if (is-alive world x y)
         (print " x ")
-        (print " o ")))))
+        (print " o ")))
+    (println)))
 
 (render world)
+(render (concat (get-neighbours 4 5) world))
+
