@@ -22,27 +22,32 @@
 (def world
   '({:x 4, :y 5} {:x 5, :y 5} {:x 6, :y 5}))
 
-(defn get-live-neighbours-count [world cell])
-
 (defn get-neighbours [x y]
-  (concat (map (fn [i] {:y (+ y i) :x (- x 1)}) (range -1 2))
-          (map (fn [i] {:x x :y (+ y i)}) (range -1 2))
-          (map (fn [i] {:x (+ x 1) :y (+ y i)}) (range -1 2))))
-
-(count (get-neighbours 4 5))
+  (filter (fn [cell] (not (= cell {:x x :y y})))
+          (concat (map (fn [i] {:y (+ y i) :x (- x 1)}) (range -1 2))
+                  (map (fn [i] {:x x :y (+ y i)}) (range -1 2))
+                  (map (fn [i] {:x (+ x 1) :y (+ y i)}) (range -1 2)))))
 
 (defn is-alive [world x y]
   (some (fn [item] (= item {:x x :y y})) world))
 
-(is-alive world 5 5)
+(defn get-live-neighbours-count [world {x :x y :y}]
+  (count (filter (fn [{x :x y :y}] (is-alive world x y))
+                 (get-neighbours x y))))
+
+(count (get-neighbours 6 5))
+(is-alive world 6 5)
+(get-live-neighbours-count world {:x 5 :y 4})
+(def cell-neighbours-count (get-live-neighbours-count world {:x 2 :y 8}))
+(next-cell-state :dead cell-neighbours-count)
 
 (defn render [world]
   (print "   ")
   (dotimes [n 10] (print n " "))
   (println)
-  (dotimes [x 10]
-    (print x "")
-    (dotimes [y 10]
+  (dotimes [y 10]
+    (print y "")
+    (dotimes [x 10]
       (if (is-alive world x y)
         (print " x ")
         (print " o ")))
