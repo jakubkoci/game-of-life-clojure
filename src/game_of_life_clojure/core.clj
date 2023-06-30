@@ -41,6 +41,20 @@
 (def cell-neighbours-count (get-live-neighbours-count world {:x 2 :y 8}))
 (next-cell-state :dead cell-neighbours-count)
 
+(filter (fn [cell] (= (next-cell-state :live (get-live-neighbours-count world cell)) :live)) world)
+
+(def dead-neighbours (filter
+                      (fn [{x :x y :y}] (not (is-alive world x y)))
+                      (set (flatten
+                            (map
+                             (fn [{x :x y :y}] (get-neighbours x y))
+                             world)))))
+
+(count dead-neighbours)
+
+(filter (fn [cell] (= (next-cell-state :live (get-live-neighbours-count world cell)) :live)) world)
+(filter (fn [cell] (= (next-cell-state :dead (get-live-neighbours-count world cell)) :live)) dead-neighbours)
+
 (defn render [world]
   (print "   ")
   (dotimes [n 10] (print n " "))
