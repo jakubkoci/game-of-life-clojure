@@ -1,12 +1,4 @@
-(ns game-of-life-clojure.core
-  (:gen-class))
-
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Helloooo, World!"))
-
-(-main)
+(ns game-of-life-clojure.core)
 
 (defn next-cell-state [current-state neighbours-count]
   (if (= current-state :live)
@@ -53,18 +45,3 @@
                   world)
           (filter (fn [cell] (= (next-cell-state :dead (get-live-neighbours-count world cell)) :live))
                   (dead-neighbours world))))
-
-(defn render [world]
-  (print "   ")
-  (dotimes [n 10] (print n " "))
-  (println)
-  (dotimes [y 10]
-    (print y "")
-    (dotimes [x 10]
-      (if (is-alive world x y)
-        (print " x ")
-        (print " o ")))
-    (println)))
-
-(render world)
-(render (tick world))
