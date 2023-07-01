@@ -38,22 +38,21 @@
 (count (get-neighbours 6 5))
 (is-alive world 6 5)
 (get-live-neighbours-count world {:x 5 :y 4})
-(def cell-neighbours-count (get-live-neighbours-count world {:x 2 :y 8}))
-(next-cell-state :dead cell-neighbours-count)
+(next-cell-state :dead (get-live-neighbours-count world {:x 2 :y 8}))
 
-(filter (fn [cell] (= (next-cell-state :live (get-live-neighbours-count world cell)) :live)) world)
+(defn dead-neighbours [world]
+  (filter
+   (fn [{x :x y :y}] (not (is-alive world x y)))
+   (set (flatten
+         (map
+          (fn [{x :x y :y}] (get-neighbours x y))
+          world)))))
 
-(def dead-neighbours (filter
-                      (fn [{x :x y :y}] (not (is-alive world x y)))
-                      (set (flatten
-                            (map
-                             (fn [{x :x y :y}] (get-neighbours x y))
-                             world)))))
-
-(count dead-neighbours)
-
-(filter (fn [cell] (= (next-cell-state :live (get-live-neighbours-count world cell)) :live)) world)
-(filter (fn [cell] (= (next-cell-state :dead (get-live-neighbours-count world cell)) :live)) dead-neighbours)
+(defn tick [world]
+  (concat (filter (fn [cell] (= (next-cell-state :live (get-live-neighbours-count world cell)) :live))
+                  world)
+          (filter (fn [cell] (= (next-cell-state :dead (get-live-neighbours-count world cell)) :live))
+                  (dead-neighbours world))))
 
 (defn render [world]
   (print "   ")
@@ -68,5 +67,4 @@
     (println)))
 
 (render world)
-(render (concat (get-neighbours 4 5) world))
-
+(render (tick world))
