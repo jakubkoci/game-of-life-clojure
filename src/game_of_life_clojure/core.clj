@@ -21,7 +21,7 @@
                   (map (fn [i] {:x (+ x 1) :y (+ y i)}) (range -1 2)))))
 
 (defn is-alive [world x y]
-  (some (fn [item] (= item {:x x :y y})) world))
+  (some? (some (fn [item] (= item {:x x :y y})) world)))
 
 (defn get-live-neighbours-count [world {x :x y :y}]
   (count (filter (fn [{x :x y :y}] (is-alive world x y))
