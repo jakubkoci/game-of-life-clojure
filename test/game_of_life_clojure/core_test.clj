@@ -19,9 +19,9 @@
 
 (deftest is-alive-test
   (testing "returns true when cell is in the world collection"
-    (is (= (is-alive world {:x 6 :y 5}) true)))
+    (is (= (is-alive? world {:x 6 :y 5}) true)))
   (testing "returns false when cell is not in the world collection"
-    (is (= (is-alive world {:x 1 :y 1}) false))))
+    (is (= (is-alive? world {:x 1 :y 1}) false))))
 
 (deftest get-live-neighbours-count-test
   (testing "returns 3 for cell at 5 4"

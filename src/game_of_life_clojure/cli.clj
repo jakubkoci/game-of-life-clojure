@@ -9,7 +9,7 @@
   (dotimes [y 10]
     (print y "")
     (dotimes [x 10]
-      (if (is-alive world {:x x :y y})
+      (if (is-alive? world {:x x :y y})
         (print " x ")
         (print " o ")))
     (println)))
