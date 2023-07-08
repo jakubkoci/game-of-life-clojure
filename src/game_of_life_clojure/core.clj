@@ -1,5 +1,7 @@
 (ns game-of-life-clojure.core)
 
+(declare will-survive)
+(declare will-revive)
 (declare next-cell-state)
 (declare dead-neighbours)
 (declare get-live-neighbours-count)
@@ -11,10 +13,16 @@
   '({:x 4, :y 5} {:x 5, :y 5} {:x 6, :y 5}))
 
 (defn tick [world]
-  (concat (filter (fn [cell] (= (next-cell-state :live (get-live-neighbours-count world cell)) :live))
+  (concat (filter (partial will-survive world)
                   world)
-          (filter (fn [cell] (= (next-cell-state :dead (get-live-neighbours-count world cell)) :live))
+          (filter (partial will-revive world)
                   (dead-neighbours world))))
+
+(defn will-survive [world cell]
+  (= (next-cell-state :live (get-live-neighbours-count world cell)) :live))
+
+(defn will-revive [world cell]
+  (= (next-cell-state :dead (get-live-neighbours-count world cell)) :live))
 
 (defn next-cell-state [current-state neighbours-count]
   (if (= current-state :live)
