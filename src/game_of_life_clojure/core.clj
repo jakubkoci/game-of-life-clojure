@@ -34,16 +34,16 @@
       :dead)))
 
 (defn dead-neighbours [world]
-  (filter
-   (fn [cell] (is-dead? world cell))
-   (set (flatten
-         (map
-          (fn [cell] (get-neighbours cell))
-          world)))))
+  (->> world
+       (map (fn [cell] (get-neighbours cell)))
+       (flatten)
+       (set)
+       (filter (fn [cell] (is-dead? world cell)))))
 
 (defn get-live-neighbours-count [world cell]
-  (count (filter (fn [neighbour] (is-alive? world neighbour))
-                 (get-neighbours cell))))
+  (->> (get-neighbours cell)
+       (filter (fn [neighbour] (is-alive? world neighbour)))
+       (count)))
 
 (defn is-alive? [world cell]
   (some? (some (fn [c] (= c cell)) world)))
@@ -52,10 +52,10 @@
   (not (is-alive? world cell)))
 
 (defn get-neighbours [{x :x y :y :as current-cell}]
-  (filter (fn [cell] (not= cell current-cell))
-          (concat (map (fn [i] {:y (+ y i) :x (- x 1)}) (range -1 2))
-                  (map (fn [i] {:x x :y (+ y i)}) (range -1 2))
-                  (map (fn [i] {:x (+ x 1) :y (+ y i)}) (range -1 2)))))
+  (->> (concat (map (fn [i] {:y (+ y i) :x (- x 1)}) (range -1 2))
+               (map (fn [i] {:x x :y (+ y i)}) (range -1 2))
+               (map (fn [i] {:x (+ x 1) :y (+ y i)}) (range -1 2)))
+       (filter (fn [cell] (not= cell current-cell)))))
 
 (count (get-neighbours {:x 6 :y 5}))
 (is-alive? world {:x 6 :y 5})
