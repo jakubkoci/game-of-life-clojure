@@ -57,7 +57,10 @@
                (map (fn [i] {:x (+ x 1) :y (+ y i)}) (range -1 2)))
        (filter (partial not= current-cell))))
 
-(count (get-neighbours {:x 6 :y 1}))
-(is-alive? world {:x 6 :y 5})
-(get-live-neighbours-count world {:x 5 :y 4})
-(next-cell-state :dead (get-live-neighbours-count world {:x 2 :y 8}))
+(comment
+  ;; Here you can play around with functions delcared in this file by
+  ;; evaluating them in REPL.
+  (count (get-neighbours {:x 6 :y 5}))
+  (is-alive? world {:x 6 :y 5})
+  (get-live-neighbours-count world {:x 5 :y 4})
+  (next-cell-state :dead (get-live-neighbours-count world {:x 2 :y 8})))
