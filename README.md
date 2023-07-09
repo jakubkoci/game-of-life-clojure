@@ -1,36 +1,30 @@
 # game-of-life-clojure
 
-FIXME: description
+Conwey's game of life implemented in Clojure. There is not GUI yet, I played around with Humble UI but wasn't able to make any progress so far. You can run it in command line though.
 
-## Installation
+## Run CLI
 
-Download from http://example.com/FIXME.
+```sh
+clj -M -m game-of-life-clojure.cli
+```
 
-## Usage
+## Run Tests
 
-FIXME: explanation
+```sh
+clj -X:test
+```
 
-    $ java -jar game-of-life-clojure-0.1.0-standalone.jar [args]
+## Run REPL
 
-## Options
+I don't know how to run repl server without running the user namespace that opens the window as the following command. `clj -M:dev` opens just regular repl I'm not able to connect to from editor.
 
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+```sh
+clj -M:dev -m user
+```
 
 ## License
 
-Copyright © 2023 FIXME
+Copyright © 2023 Jakub Koci
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
